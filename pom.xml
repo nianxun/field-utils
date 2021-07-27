@@ -32,6 +32,19 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/net.redhogs.cronparser/cron-parser-core -->
+        <dependency>
+            <groupId>net.redhogs.cronparser</groupId>
+            <artifactId>cron-parser-core</artifactId>
+            <version>3.4</version>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.activiti</groupId>-->
+<!--            <artifactId>activiti-spring-boot-starter-basic</artifactId>-->
+<!--            <version>6.0.0</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>
