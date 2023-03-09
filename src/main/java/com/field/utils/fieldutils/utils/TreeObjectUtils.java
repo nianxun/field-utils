@@ -57,13 +57,11 @@ public class TreeObjectUtils {
             if (levelList == null) {
                 levelList = new ArrayList<>();
                 index = 0;
-                levelList.add(t);
-                levelMap.put(mapLevel, levelList);
             } else {
                 index = levelList.size();
-                levelList.add(t);
-                levelMap.put(mapLevel, levelList);
             }
+            levelList.add(t);
+            levelMap.put(mapLevel, levelList);
             map.put(key, index);
         }
         // 开始构建树
