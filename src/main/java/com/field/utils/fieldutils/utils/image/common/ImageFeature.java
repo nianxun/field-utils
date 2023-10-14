@@ -3,15 +3,15 @@ package com.field.utils.fieldutils.utils.image.common;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.bytedeco.javacpp.indexer.UByteIndexer;
-import org.bytedeco.opencv.global.opencv_core;
-import org.bytedeco.opencv.global.opencv_imgproc;
-import org.bytedeco.opencv.opencv_core.Mat;
-import org.bytedeco.opencv.opencv_core.MatVector;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Field
@@ -27,27 +27,29 @@ public class ImageFeature {
      */
     public static double[] calculateColor(Mat mat) {
         //直方图均衡化 图片增强
-        opencv_imgproc.cvtColor(mat, mat, opencv_imgproc.COLOR_BGR2YCrCb);
-        MatVector matVector = new MatVector();
+        Imgproc.cvtColor(mat, mat, Imgproc.COLOR_BGR2YCrCb);
 
-        opencv_core.split(mat, matVector);
-        opencv_imgproc.equalizeHist(matVector.get(0), matVector.get(0));
-        opencv_core.normalize(matVector.get(0), matVector.get(0), 0, 255, opencv_core.NORM_MINMAX, -1, new Mat());
-        opencv_core.merge(matVector, mat);
-        opencv_imgproc.cvtColor(mat, mat, opencv_imgproc.COLOR_YCrCb2BGR);
+        List<Mat> list = new ArrayList<>();
+        Core.split(mat, list);
+        Imgproc.equalizeHist(list.get(0), list.get(0));
+        Core.normalize(list.get(0), list.get(0), 0, 255, Core.NORM_MINMAX);
+        Core.merge(list, mat);
+        Imgproc.cvtColor(mat, mat, Imgproc.COLOR_YCrCb2BGR);
+
         //RGB到HSV
-        UByteIndexer matIndexer = mat.createIndexer();
-        double[] y = new double[9];
-        double[] B = new double[mat.rows() * mat.cols()];
-        double[] G = new double[mat.rows() * mat.cols()];
-        double[] R = new double[mat.rows() * mat.cols()];
-        for (int j = 0; j < mat.rows(); j++) {
-            for (int k = 0; k < mat.cols(); k++) {
-                B[j * mat.cols() + k] = matIndexer.get(j, k, 0);
-                G[j * mat.cols() + k] = matIndexer.get(j, k, 1);
-                R[j * mat.cols() + k] = matIndexer.get(j, k, 2);
+        double [] y = new double[9];
+        double [] B=new double[mat.rows()* mat.cols()];
+        double [] G=new double[mat.rows()* mat.cols()];
+        double [] R=new double[mat.rows()* mat.cols()];
+        for(int j = 0; j< mat.rows(); j++){
+            for(int k = 0; k< mat.cols(); k++){
+                double [] data= mat.get(j, k);
+                B[j* mat.cols()+k]=data[0];
+                G[j* mat.cols()+k]=data[1];
+                R[j* mat.cols()+k]=data[2];
             }
         }
+
         y[0] = mean(B);
         y[1] = std(B, mean(B));
         y[2] = skew(B, mean(B));
@@ -155,9 +157,9 @@ public class ImageFeature {
 
     public static double[] calculateTexture(Mat mat) {
         Mat gray = new Mat(mat.rows(), mat.cols(), CvType.CV_8UC3);//灰度图象
-        opencv_imgproc.cvtColor(mat, gray, opencv_imgproc.COLOR_BGR2GRAY);//RGB->GRAY
-        int height = gray.arrayHeight();
-        int width = gray.arrayWidth();
+        Imgproc.cvtColor(mat, gray, Imgproc.COLOR_BGR2GRAY);//RGB->GRAY
+        int height = gray.height();
+        int width = gray.width();
         int[][] grayLow = new int[height][width];//降低等级后的灰度图像
         double[][][] glcm = new double[4][8][8];//四个灰度共生矩阵
         int gi, gj;//像素对
@@ -172,10 +174,9 @@ public class ImageFeature {
         double[] ay = new double[4];
 
         //降低灰度等级，分成8个区间
-        UByteIndexer matIndexer = gray.createIndexer();
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                grayLow[i][j] = matIndexer.get(i, j, 0) / 32;
+        for(int i=0;i<height;i++) {
+            for(int j=0;j<width;j++) {
+                grayLow[i][j] = (int) (gray.get(i,j)[0]/32);
             }
         }
         //按四个方向遍历图片，记录灰度值对出现的次数

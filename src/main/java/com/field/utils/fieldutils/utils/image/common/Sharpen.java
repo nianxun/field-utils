@@ -7,14 +7,14 @@ public class Sharpen {
     private final int[][] OPERATOR_SOBEL_X = {{-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
     private final int[][] OPERATOR_SOBEL_Y = {{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
 
-    //sobelËã×Ó¶ÔÍ¼Ïñ½øÐÐÈñ»¯
+    //sobelç®—å­å¯¹å›¾åƒè¿›è¡Œé”åŒ–
     public BufferedImage getSharpenSobel(BufferedImage bufImg, int Width, int Height) {
         BufferedImage sharpen = new BufferedImage(Width, Height, BufferedImage.TYPE_INT_RGB);
         int alpha = (bufImg.getRGB(0, 0) >> 24) & 0xff;
 
         for (int i = 1; i < Width - 1; i++) {
             for (int j = 1; j < Height - 1; j++) {
-                //ÕÒÖÐÐÄµã¼°ÖÜÎ§µÄ8¸öµã
+                //æ‰¾ä¸­å¿ƒç‚¹åŠå‘¨å›´çš„8ä¸ªç‚¹
                 int p0 = bufImg.getRGB(i - 1, j - 1) & 0xff;
                 int p1 = bufImg.getRGB(i - 1, j) & 0xff;
                 int p2 = bufImg.getRGB(i - 1, j + 1) & 0xff;
@@ -24,7 +24,7 @@ public class Sharpen {
                 int p6 = bufImg.getRGB(i + 1, j - 1) & 0xff;
                 int p7 = bufImg.getRGB(i + 1, j) & 0xff;
                 int p8 = bufImg.getRGB(i + 1, j + 1) & 0xff;
-                //¾í»ý¼ÆËã
+                //å·ç§¯è®¡ç®—
                 int sharpen_x = p0 * OPERATOR_SOBEL_X[0][0] + p1 * OPERATOR_SOBEL_X[1][0] + p2 * OPERATOR_SOBEL_X[2][0]
                         + p6 * OPERATOR_SOBEL_X[0][2] + p7 * OPERATOR_SOBEL_X[1][2] + p8 * OPERATOR_SOBEL_X[2][2];
                 int sharpen_y = p0 * OPERATOR_SOBEL_Y[0][0] + p3 * OPERATOR_SOBEL_Y[0][1] + p6 * OPERATOR_SOBEL_Y[0][2]

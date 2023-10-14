@@ -1,16 +1,16 @@
 package com.field.utils.fieldutils.utils.image.common;
-//µü´úãĞÖµ·¨½øĞĞ¶şÖµ»¯
+//è¿­ä»£é˜ˆå€¼æ³•è¿›è¡ŒäºŒå€¼åŒ–
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-//¶şÖµ»¯£ºµü´úãĞÖµ·¨
+//äºŒå€¼åŒ–ï¼šè¿­ä»£é˜ˆå€¼æ³•
 public class IterationThreshold {
 
     private BufferedImage bufferedImage = null;
     private int T2 = 0;
 
-    //»ñÈ¡ãĞÖµ
+    //è·å–é˜ˆå€¼
     public BufferedImage getIterationThreshold(BufferedImage bufImg, int Width, int Height) {
         int t1 = 0;
         int t0 = 1;
@@ -26,19 +26,19 @@ public class IterationThreshold {
                     if (pixel <= t1) {
                         g1 += pixel;
                         n1++;
-                    }//·ÖÀà
+                    }//åˆ†ç±»
                     else {
                         g2 += pixel;
                         n2++;
                     }
                 }
-            T2 = (g1 / n1 + g2 / n2) / 2;//ĞÂµÄãĞÖµ
-        } while (Math.abs(T2 - t1) > t0);//µ±µü´úÇ°ºóÁ½´ÎÏà²î²»¶àµÄÊ±ºòÍ£Ö¹µü´ú
+            T2 = (g1 / n1 + g2 / n2) / 2;//æ–°çš„é˜ˆå€¼
+        } while (Math.abs(T2 - t1) > t0);//å½“è¿­ä»£å‰åä¸¤æ¬¡ç›¸å·®ä¸å¤šçš„æ—¶å€™åœæ­¢è¿­ä»£
         this.getBinarization(bufImg, Width, Height, T2);
         return bufferedImage;
     }
 
-    //¶şÖµ»¯
+    //äºŒå€¼åŒ–
     public void getBinarization(BufferedImage bufImg, int Width, int Height, int T) {
         bufferedImage = new BufferedImage(Width, Height, BufferedImage.TYPE_INT_RGB);
         int alpha = (bufImg.getRGB(0, 0) >> 24) & 0xff;

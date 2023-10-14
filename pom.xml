@@ -66,12 +66,20 @@
             <version>1.15.4</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.bytedeco/opencv -->
+<!--        <dependency>-->
+<!--            <groupId>org.bytedeco</groupId>-->
+<!--            <artifactId>opencv</artifactId>-->
+<!--            <version>4.6.0-1.5.8</version>-->
+<!--        </dependency>-->
+
         <!-- https://mvnrepository.com/artifact/org.bytedeco/javacv-platform -->
         <dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>javacv-platform</artifactId>
             <version>1.5.7</version>
         </dependency>
+
 
 
     </dependencies>

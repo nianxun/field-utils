@@ -1,16 +1,12 @@
 package com.field.utils.fieldutils.utils.image;
 
+
 import com.field.utils.fieldutils.utils.image.common.ImageFeature;
-import com.sun.org.apache.bcel.internal.generic.Select;
-import org.bytedeco.librealsense.frame;
 import org.bytedeco.opencv.global.opencv_imgcodecs;
-import org.bytedeco.opencv.opencv_core.Mat;
+import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -26,8 +22,8 @@ public class ImageSearch {
 
 
     //基于颜色检索
-    public void color(String filepath) {
-        double[] color = ImageFeature.calculateColor(opencv_imgcodecs.imread(filepath));
+    public void color(Mat mat) {
+        double[] color = ImageFeature.calculateColor(mat);
         Map<Integer, Double> map = new TreeMap<>();//相似度
 
         //当前数据
@@ -46,8 +42,8 @@ public class ImageSearch {
     }
 
     //基于纹理检索
-    public void texture(String filepath) {
-        double[] texture = ImageFeature.calculateTexture(opencv_imgcodecs.imread(filepath));
+    public void texture(Mat mat) {
+        double[] texture = ImageFeature.calculateTexture(mat);
         Map<Integer, Double> map = new TreeMap<>();//相似度
 
         //当前数据
@@ -68,13 +64,14 @@ public class ImageSearch {
     }
 
     //基于形状检索
-    public void shape(String filepath) throws Exception {
+    public void shape(BufferedImage bufImg) throws Exception {
 
-        File file = new File(filepath);
-        if (!file.exists()) {
-            throw new Exception("file doesn't find.");
-        }
-        double[] hu = ImageFeature.calculateShape(ImageIO.read(file));
+//        File file = new File(filepath);
+//        if (!file.exists()) {
+//            throw new Exception("file doesn't find.");
+//        }
+//        ImageIO.read(file)
+        double[] hu = ImageFeature.calculateShape(bufImg);
 
         Map<Integer, Double> map = new TreeMap<Integer, Double>();//相似度
         List<double[]> shapes = new ArrayList<>();
@@ -93,7 +90,7 @@ public class ImageSearch {
     }
 
     //综合
-    public void zonghe(String filepath, Double colorWeight, Double textureWeight, Double shapeWeight) throws Exception {
+    public void commonSearch(String filepath, Double colorWeight, Double textureWeight, Double shapeWeight) throws Exception {
         if(colorWeight < 0 || colorWeight > 1.0 ||
                 textureWeight < 0 || textureWeight > 1.0 ||
                 shapeWeight < 0 || shapeWeight > 1.0){
@@ -104,7 +101,7 @@ public class ImageSearch {
         if (!file.exists()) {
             throw new Exception("file doesn't find.");
         }
-        Mat mat = opencv_imgcodecs.imread(filepath);
+        Mat mat = Imgcodecs.imread(filepath);
         double[] hu = ImageFeature.calculateShape(ImageIO.read(file));
         double[] color = ImageFeature.calculateColor(mat);
         double[] texture = ImageFeature.calculateTexture(mat);
@@ -130,6 +127,11 @@ public class ImageSearch {
         });
         //最匹配的图片
         Map.Entry<Integer, Double> integerDoubleEntry = entryArrayList.get(0);
+
+    }
+
+    public static void findImageLocation(Mat image, Mat baseImage){
+
 
     }
 

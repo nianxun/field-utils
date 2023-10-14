@@ -6,42 +6,39 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//¶ÁÈ¡ÎÄ¼şÏÂµÄËùÓĞÍ¼Æ¬Â·¾¶ ±£´æÔÚprint.txt
+//è¯»å–æ–‡ä»¶ä¸‹çš„æ‰€æœ‰å›¾ç‰‡è·¯å¾„ ä¿å­˜åœ¨print.txt
 public class getPicture {
-	
-	
-	public void find(FileWriter writer,String path,String reg) throws IOException{
 
-		Pattern pat=Pattern.compile(reg);
 
-		File file=new File(path);
-		File[] arr=file.listFiles();
-		
-		for(int i=0;i<arr.length;i++){
+    public void find(FileWriter writer, String path, String reg) throws IOException {
 
-			//ÅĞ¶ÏÊÇ·ñÊÇÎÄ¼ş¼Ğ£¬Èç¹ûÊÇµÄ»°£¬ÔÙµ÷ÓÃÒ»ÏÂfind·½·¨
-			if(arr[i].isDirectory()){
-				find(writer, arr[i].getAbsolutePath(),reg);
-			}
-			Matcher mat=pat.matcher(arr[i].getAbsolutePath());
-			//¸ù¾İÕıÔò±í´ïÊ½£¬Ñ°ÕÒÆ¥ÅäµÄÎÄ¼ş
-			String str = arr[i].getAbsolutePath();
-			if(mat.matches()){
-				//Õâ¸ögetAbsolutePath()·½·¨·µ»ØÒ»¸öStringµÄÎÄ¼ş¾ø¶ÔÂ·¾¶
-				System.out.println(str);
-				writer.write(str+System.getProperty("line.separator"));   
-			}
-		}
-	}
-
-	public static void main(String[] args) throws IOException{
-		String filename = "E:\\print.txt";
-		File file = new File(filename);
-	    if (file.exists()) {
-	      	file.delete();
+        Pattern pat = Pattern.compile(reg);
+        File file = new File(path);
+        File[] arr = file.listFiles();
+        for (int i = 0; i < arr.length; i++) {
+            //åˆ¤æ–­æ˜¯å¦æ˜¯æ–‡ä»¶å¤¹ï¼Œå¦‚æœæ˜¯çš„è¯ï¼Œå†è°ƒç”¨ä¸€ä¸‹findæ–¹æ³•
+            if (arr[i].isDirectory()) {
+                find(writer, arr[i].getAbsolutePath(), reg);
+            }
+            Matcher mat = pat.matcher(arr[i].getAbsolutePath());
+            //æ ¹æ®æ­£åˆ™è¡¨è¾¾å¼ï¼Œå¯»æ‰¾åŒ¹é…çš„æ–‡ä»¶
+            String str = arr[i].getAbsolutePath();
+            if (mat.matches()) {
+                //è¿™ä¸ªgetAbsolutePath()æ–¹æ³•è¿”å›ä¸€ä¸ªStringçš„æ–‡ä»¶ç»å¯¹è·¯å¾„
+                System.out.println(str);
+                writer.write(str + System.getProperty("line.separator"));
+            }
         }
-	    FileWriter writer = new FileWriter("E:\\print.txt", true);  
-		new getPicture().find(writer,"E:\\data", "\\S+\\.jpg");
-		writer.close(); 
-	}
+    }
+
+    public static void main(String[] args) throws IOException {
+        String filename = "E:\\print.txt";
+        File file = new File(filename);
+        if (file.exists()) {
+            file.delete();
+        }
+        FileWriter writer = new FileWriter("E:\\print.txt", true);
+        new getPicture().find(writer, "E:\\data", "\\S+\\.jpg");
+        writer.close();
+    }
 }
