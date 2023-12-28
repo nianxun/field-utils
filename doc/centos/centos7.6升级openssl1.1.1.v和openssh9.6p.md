@@ -6,8 +6,8 @@ repotrack -p /root/upload-ssh install perl-CPAN perl-IPC-Cmd gcc gcc-c++ pam-dev
 yum install wget -y
 wget https://www.openssl.org/source/old/1.1.1/openssl-1.1.1v.tar.gz --no-check-certificate
 wget https://mirrors.aliyun.com/pub/OpenBSD/OpenSSH/portable/openssh-9.6p1.tar.gz
-mv openssh-9.6p1。tar.gz /root/upload-ssh
-mv openssl-1.1.1v。tar.gz /root/upload-ssh
+mv openssh-9.6p1.tar.gz /root/upload-ssh
+mv openssl-1.1.1v.tar.gz /root/upload-ssh
 tar -czvf upload-ssh.tar.gz -C /root upload-ssh
 ```
 ## 将upload-ssh.tar.gz放置到目标主机的相关文件夹下，解压安装
@@ -21,8 +21,8 @@ cd ..
 ### 解压 openssl 与 openssh
 ``` shell
 cd upload-ssh
-tar zxvf openssl-1.1.1v。tar.gz
-tar zxvf openssh-9.6p1。tar.gz
+tar zxvf openssl-1.1.1v.tar.gz
+tar zxvf openssh-9.6p1.tar.gz
 ```
 ### 安装openssl
 ``` shell
